@@ -25,7 +25,7 @@ public class StuLogin extends AppCompatActivity {
 
         final EditText username = (EditText) findViewById(R.id.editText);
         final EditText password = (EditText) findViewById(R.id.editText4);
-        final Button button = findViewById(R.id.button);
+        /*final Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (firebaseHandler.checkTeacherLogin(username.getText().toString(),password.getText().toString())) {
@@ -37,7 +37,7 @@ public class StuLogin extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
         final Button button2 = findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
