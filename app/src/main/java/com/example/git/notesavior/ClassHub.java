@@ -29,6 +29,9 @@ public class ClassHub extends AppCompatActivity {
             final Button y_button = findViewById(R.id.button2);
             y_button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    Intent myIntent = new Intent(ClassHub.this, CameraActivity.class);
+                    // myIntent.putExtra("key", value); //Optional parameters
+                    ClassHub.this.startActivity(myIntent);
 
                 }
             });

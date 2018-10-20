@@ -22,6 +22,10 @@
         <activity android:name=".NewCourse">
 
         </activity>
+        <activity android:name=".CameraActivity">
+
+        </activity>
+
     </application>
 
 </manifest>
