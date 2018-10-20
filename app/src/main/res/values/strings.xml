@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">NoteSavior</string>
+    <string name="teacher_login">Teacher Login</string>
+    <string name="pass">Password</string>
+    <string name="user">Username</string>
+    <string name="button">Login</string>
+    <string name="courseName">Course Name</string>
+    <string name="courseHour">Hour</string>
+    <string name="is_class">Is this your class?</string>
+    <string name="y_button">Yes</string>
+    <string name="n_button">No</string>
+    <string name="newClass">Create a New Class</string>
+    <string name="start">Start Time</string>
+    <string name="end">End Time</string>
+    <string name="finish">Finish</string>
+
+
 </resources>
