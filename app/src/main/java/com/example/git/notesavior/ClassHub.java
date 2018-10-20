@@ -20,6 +20,7 @@ public class ClassHub extends AppCompatActivity {
         Calendar rightNow = Calendar.getInstance();
         int currentHour = rightNow.get(Calendar.HOUR);
         String currentHr = ""+currentHour;
+<<<<<<< HEAD
 
         Class theclass;
         theclass = FireBaseHandler.getInstance().guessClass(Integer.parseInt(currentHr));
@@ -42,5 +43,37 @@ public class ClassHub extends AppCompatActivity {
                 ClassHub.this.startActivity(myIntent);
             }
         });
+=======
+        Class theclass = FireBaseHandler.getInstance().guessClass(Integer.parseInt(currentHr));
+
+        if (theclass.code.length()>0){
+            TextView hr = (TextView) findViewById(R.id.textView12);
+            hr.setText(currentHr);
+            TextView CN = (TextView) findViewById(R.id.textView11);
+            CN.setText("Course Name Corresponding to hr");
+            final Button y_button = findViewById(R.id.button2);
+            y_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(ClassHub.this, CameraActivity.class);
+                    // myIntent.putExtra("key", value); //Optional parameters
+                    ClassHub.this.startActivity(myIntent);
+
+                }
+            });
+            final Button n_button = findViewById(R.id.button3);
+            n_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(ClassHub.this, NewCourse.class);
+                    // myIntent.putExtra("key", value); //Optional parameters
+                    ClassHub.this.startActivity(myIntent);
+                }
+            });
+        }
+        else {
+            Intent myIntent = new Intent(ClassHub.this, NewCourse.class);
+            // myIntent.putExtra("key", value); //Optional parameters
+            ClassHub.this.startActivity(myIntent);
+        }
+>>>>>>> 2d45162537e40172f67255f1f782ddc981f1e4c1
     }
 }
