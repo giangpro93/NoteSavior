@@ -1,6 +1,7 @@
 package com.example.git.notesavior;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -12,31 +13,28 @@ import android.widget.Toast;
 public class Login extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
-
+    private FireBaseHandler firebaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        firebaseHandler = FireBaseHandler.getInstance();
+        firebaseHandler.getTeachers();
+
         final EditText username = (EditText) findViewById(R.id.editText2);
         final EditText password = (EditText) findViewById(R.id.editText1);
         final Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (username.getText().toString().equals("databasestuff") && password.getText().toString().equals("databasestuff")) {
-                    // if time within some class range go to activity_classhub for that class
-                    // else go to create new class
-                    //Intent myIntent = new Intent(Login.this, ClassHub.class);
-                    //myIntent.putExtra("key", value); //Optional parameters
-                    //CurrentActivity.this.startActivity(myIntent);
+                if (firebaseHandler.checkTeacherLogin(username.getText().toString(),password.getText().toString())) {
+                    Toast.makeText(getApplicationContext(),"Login successful",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, ClassHub.class);
+                    startActivity(intent);
                 }
                 else {
-                    Context context = getApplicationContext();
-                    CharSequence text = "Invalid Username or Password";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -45,14 +43,15 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 if ((username.getText().toString().length()>0) && (password.getText().toString().length()>0)) {
                     //put this stuff in database
+                    if (firebaseHandler.addTeacher(username.getText().toString(),password.getText().toString())) {
+                        Toast.makeText(getApplicationContext(),"Create new account successfully",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(),"Username is already exist",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else {
-                    Context context = getApplicationContext();
-                    CharSequence text = "Invalid Username or Password";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_SHORT).show();
                 }
             }
         });

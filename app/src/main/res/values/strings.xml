@@ -5,7 +5,7 @@
     <string name="user">Username</string>
     <string name="button">Login</string>
     <string name="courseName">Course Name</string>
-    <string name="courseHour">Hour</string>
+    <string name="courseCode">Code</string>
     <string name="is_class">Is this your class?</string>
     <string name="y_button">Yes</string>
     <string name="n_button">No</string>
