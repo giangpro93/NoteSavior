@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class Login extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
@@ -30,8 +32,22 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 if (firebaseHandler.checkTeacherLogin(username.getText().toString(),password.getText().toString())) {
                     Toast.makeText(getApplicationContext(),"Login successful",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, ClassHub.class);
-                    startActivity(intent);
+
+                    Calendar rightNow = Calendar.getInstance();
+                    int currentHour = rightNow.get(Calendar.HOUR);
+                    String currentHr = ""+currentHour;
+
+                    Class theclass;
+                    theclass = firebaseHandler.guessClass(Integer.parseInt(currentHr));
+
+                    if (theclass.code.length()>0){
+                        Intent intent = new Intent(Login.this, ClassHub.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(Login.this, NewCourse.class);
+                        startActivity(intent);
+                    }
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_SHORT).show();

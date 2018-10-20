@@ -15,8 +15,8 @@ public class FireBaseHandler {
 
     private DatabaseReference teachers;
     private DatabaseReference students;
-    private DatabaseReference Tclasses;
-    private DatabaseReference Sclasses;
+    //private DatabaseReference Tclasses;
+    //private DatabaseReference Sclasses;
     private StorageReference pictures;
 
     private User user;
@@ -24,11 +24,12 @@ public class FireBaseHandler {
     private HashMap<String, String> teacherLogins = new HashMap<>();
     private HashMap<String, String> studentLogins = new HashMap<>();
     private ArrayList<Class> Classes = new ArrayList<>();
+    private Class res = new Class();
 
     private static FireBaseHandler init = null;
 
     public static FireBaseHandler getInstance() {
-        if(init == null) {
+        if (init == null) {
             init = new FireBaseHandler();
         }
         return init;
@@ -44,6 +45,7 @@ public class FireBaseHandler {
 
         storage = FirebaseStorage.getInstance();
         pictures = storage.getReference("pictures");
+        user = new User();
     }
 /*
     private FirebaseHandler(String userId) {
@@ -61,7 +63,7 @@ public class FireBaseHandler {
 }*/
 
     public boolean addTeacher(String username, String password) {
-        if(teacherLogins.containsKey(username)){
+        if (teacherLogins.containsKey(username)) {
             return false;
         }
 
@@ -73,7 +75,7 @@ public class FireBaseHandler {
     }
 
     public boolean addStudent(String username, String password) {
-        if(studentLogins.containsKey(username)){
+        if (studentLogins.containsKey(username)) {
             return false;
         }
 
@@ -89,13 +91,14 @@ public class FireBaseHandler {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 teacherLogins.clear();
-                for(DataSnapshot d : dataSnapshot.getChildren()) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
                     teacherLogins.put((String) d.child("username").getValue(), (String) d.child("password").getValue());
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
@@ -104,54 +107,61 @@ public class FireBaseHandler {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 studentLogins.clear();
-                for(DataSnapshot d : dataSnapshot.getChildren()) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
                     studentLogins.put((String) d.child("username").getValue(), (String) d.child("password").getValue());
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
     public boolean checkTeacherLogin(String username, String password) {
-        if(teacherLogins.containsKey(username) && teacherLogins.get(username).equals(password)) {
-            user = new User();
-            user.username=username;
-            user.password=password;
-            user.isTeacher=true;
+        if (teacherLogins.containsKey(username) && teacherLogins.get(username).equals(password)) {
+            //user = new User();
+            user.username = username;
+            user.password = password;
+            user.isTeacher = true;
+
 
             teachers.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot d : dataSnapshot.getChildren()) {
-                        String id = (String) d.child("username").getValue();
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+
+                        final String id = d.child("username").getValue().toString();
                         if (id.equals(user.username)) {
+
+                            //Classes.clear();
                             DatabaseReference temp = teachers.child(d.getKey()).child("classes");
 
                             temp.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot2) {
-                                    for(DataSnapshot d2 : dataSnapshot2.getChildren()) {
+                                    for (DataSnapshot d2 : dataSnapshot2.getChildren()) {
                                         Class newClass;
                                         newClass = new Class();
                                         newClass.courseName = (String) d2.child("courseName").getValue();
                                         newClass.code = (String) d2.child("code").getValue();
-                                        newClass.startTime = (int) d2.child("startTime").getValue();
-                                        newClass.endTime = (int) d2.child("endTime").getValue();
+                                        newClass.startTime = Integer.parseInt(d2.child("startTime").getValue().toString());
+                                        newClass.endTime = Integer.parseInt(d2.child("endTime").getValue().toString());
                                         Classes.add(newClass);
                                     }
                                 }
 
                                 @Override
-                                public void onCancelled(DatabaseError databaseError) {}
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
                             });
                         }
                     }
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {}
+                public void onCancelled(DatabaseError databaseError) {
+                }
             });
 
             return true;
@@ -160,40 +170,83 @@ public class FireBaseHandler {
     }
 
     public boolean checkStudentLogin(String username, String password) {
-        if(studentLogins.containsKey(username) && studentLogins.get(username).equals(password)) {
-            user = new User();
-            user.username=username;
-            user.password=password;
-            user.isTeacher=false;
+        if (studentLogins.containsKey(username) && studentLogins.get(username).equals(password)) {
+            //user = new User();
+            user.username = username;
+            user.password = password;
+            user.isTeacher = false;
             return true;
         }
 
         return false;
     }
 
-    public boolean addClass(final String courseName,final String code,final int startTime,final int endTime) {
+    public boolean addClass(final String courseName, final String code, final int startTime, final int endTime) {
         teachers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot d : dataSnapshot.getChildren()) {
-                    String id = (String) d.child("username").getValue();
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+
+                    final String id = d.child("username").getValue().toString();
                     if (id.equals(user.username)) {
-                        DatabaseReference temp = teachers.child(d.getKey()).child("classes").push();
-                        temp.child("courseName").setValue(courseName);
-                        temp.child("code").setValue(code);
-                        temp.child("startTime").setValue(startTime);
-                        temp.child("endTime").setValue(endTime);
+                        DatabaseReference temp1 = teachers.child(d.getKey()).child("classes").push();
+                        temp1.child("courseName").setValue(courseName);
+                        temp1.child("code").setValue(code);
+                        temp1.child("startTime").setValue(startTime);
+                        temp1.child("endTime").setValue(endTime);
                     }
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
         return true;
     }
 
     public Class guessClass(int hour) {
+        teachers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+
+                    final String id = d.child("username").getValue().toString();
+                    if (id.equals(user.username)) {
+
+                        //Classes.clear();
+                        DatabaseReference temp = teachers.child(d.getKey()).child("classes");
+
+                        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot2) {
+                                for (DataSnapshot d2 : dataSnapshot2.getChildren()) {
+                                    Class newClass;
+                                    newClass = new Class();
+                                    newClass.courseName = (String) d2.child("courseName").getValue();
+                                    newClass.code = (String) d2.child("code").getValue();
+                                    newClass.startTime = Integer.parseInt(d2.child("startTime").getValue().toString());
+                                    newClass.endTime = Integer.parseInt(d2.child("endTime").getValue().toString());
+                                    Classes.add(newClass);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        System.out.println("------------------------------------------");
+        System.out.println(Classes.size());
+
         Class nullclass;
         nullclass = new Class();
         nullclass.code = "";
