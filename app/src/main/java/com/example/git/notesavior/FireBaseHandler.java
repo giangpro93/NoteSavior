@@ -10,6 +10,8 @@ import com.google.firebase.storage.*;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 //import java.util.UUID;
 
 public class FireBaseHandler {
@@ -26,9 +28,12 @@ public class FireBaseHandler {
 
     private HashMap<String, String> teacherLogins = new HashMap<String, String>();
     private HashMap<String, String> studentLogins = new HashMap<String, String>();
-    private ArrayList<ArrayList<Class>> ArrayOfClasses = new ArrayList<ArrayList<Class>>();
-    private ArrayList<Class> Classes = new ArrayList<Class>();
-    private ArrayList<String> teacherUsernames = new ArrayList<String>();
+    private Vector<Class> ArrayOfClasses = new Vector<Class>();
+    private Vector<Integer> numberOfClasses = new Vector<Integer>();
+    private Vector<String> teacherUsernames = new Vector<String>();
+
+    private int numberOfTeachers;
+    private int count;
 
     private static FireBaseHandler init = null;
 
@@ -74,6 +79,7 @@ public class FireBaseHandler {
         DatabaseReference newTeacher = teachers.push();
         newTeacher.child("username").setValue(username);
         newTeacher.child("password").setValue(password);
+        newTeacher.child("numberOfClasses").setValue("0");
 
         return true;
     }
@@ -97,28 +103,33 @@ public class FireBaseHandler {
                 teacherLogins.clear();
                 ArrayOfClasses.clear();
                 teacherUsernames.clear();
+                count=0;
+                numberOfTeachers=0;
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     teacherLogins.put((String) d.child("username").getValue(), (String) d.child("password").getValue());
                     teacherUsernames.add((String) d.child("username").getValue());
+                    if (d.child("numberOfClasses").getValue()!=null)
+                    numberOfClasses.add(Integer.parseInt(d.child("numberOfClasses").getValue().toString()));
+                    else numberOfClasses.add(0);
+
                     DatabaseReference data = teachers.child(d.getKey()).child("classes");
-                    Classes.clear();
+                    numberOfTeachers++;
                     data.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot2) {
                             for (DataSnapshot d2 : dataSnapshot2.getChildren()) {
                                 Class newClass = new Class();
-                                newClass.courseName = d2.child("courseName").getValue().toString();
-                                newClass.code = d2.child("code").getValue().toString();
-                                newClass.startTime = Integer.parseInt(d2.child("startTime").getValue().toString());
-                                newClass.endTime = Integer.parseInt(d2.child("endTime").getValue().toString());
-                                Classes.add(newClass);
+                                if (d2.child("courseName").getValue()!=null) newClass.courseName = d2.child("courseName").getValue().toString();
+                                if (d2.child("code").getValue()!=null) newClass.code = d2.child("code").getValue().toString();
+                                if (d2.child("startTime").getValue()!=null) newClass.startTime = Integer.parseInt(d2.child("startTime").getValue().toString());
+                                if (d2.child("endTime").getValue()!=null) newClass.endTime = Integer.parseInt(d2.child("endTime").getValue().toString());
+                                ArrayOfClasses.add(newClass);
                             }
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {}
+                        public void onCancelled(DatabaseError databaseError2) {}
                     });
-                    ArrayOfClasses.add(Classes);
                 }
             }
 
@@ -169,11 +180,13 @@ public class FireBaseHandler {
 
     public boolean addClass(final String courseName, final String code, final int startTime, final int endTime) {
         teachers.addListenerForSingleValueEvent(new ValueEventListener() {
-            //@Override
+            @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     final String id = d.child("username").getValue().toString();
                     if (id.equals(user.username)) {
+                        int a=Integer.parseInt(d.child("numberOfClasses").getValue().toString());
+                        teachers.child(d.getKey()).child("numberOfClasses").setValue(a+1);
                         DatabaseReference temp1 = teachers.child(d.getKey()).child("classes").push();
                         temp1.child("courseName").setValue(courseName);
                         temp1.child("code").setValue(code);
@@ -183,7 +196,7 @@ public class FireBaseHandler {
                 }
             }
 
-            //@Override
+            @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
@@ -195,13 +208,27 @@ public class FireBaseHandler {
         Class nullclass;
         nullclass = new Class();
         nullclass.code = "";
-
-        for (int i=0; i<ArrayOfClasses.size() ; i++){
+        count = 0;
+        for (int i=0; i<numberOfTeachers; i++){
+            System.out.println(i);
+            System.out.println("----------------------");
+            System.out.println(count);
+            System.out.println(count+numberOfClasses.get(i)-1);
+            System.out.println("----------------------");
             if (teacherUsernames.get(i).equals(user.username))
             {
-                for (int j=0; j<ArrayOfClasses.get(i).size(); j++)
-                    if (ArrayOfClasses.get(i).get(j).startTime<=hour && hour<=ArrayOfClasses.get(i).get(j).endTime) return ArrayOfClasses.get(i).get(j);
+
+                for (int j=count; j<count+numberOfClasses.get(i); j++) {
+                    System.out.println(j);
+                    System.out.println("----------------------");
+                    System.out.println(ArrayOfClasses.get(j).courseName);
+                    System.out.println("----------------------");
+                    if (ArrayOfClasses.get(j).startTime <= hour && hour <= ArrayOfClasses.get(j).endTime)
+                        return ArrayOfClasses.get(j);
+                }
             }
+            count=count+numberOfClasses.get(i);
+
         }
         return nullclass;
     }
