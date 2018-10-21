@@ -29,9 +29,10 @@ public class StuLogin extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (firebaseHandler.addStudent(username.getText().toString(), code.getText().toString())) {
-                    Intent myIntent = new Intent(StuLogin.this, tempClass.class);
-                    myIntent.putExtra("key", code.getText().toString()); //Optional parameter
-                    startActivity(myIntent);
+                    //Intent myIntent = new Intent(StuLogin.this, tempClass.class);
+                    //myIntent.putExtra("key", code.getText().toString()); //Optional parameter
+                    //startActivity(myIntent);
+                    Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                 }
