@@ -21,7 +21,7 @@ public class ClassHub extends AppCompatActivity {
         int currentHour = rightNow.get(Calendar.HOUR);
         String currentHr = ""+currentHour;
 
-        Class theclass;
+        final Class theclass;
         theclass = FireBaseHandler.getInstance().guessClass(Integer.parseInt(currentHr));
 
         TextView code = (TextView) findViewById(R.id.textView12);
@@ -31,6 +31,9 @@ public class ClassHub extends AppCompatActivity {
         final Button y_button = findViewById(R.id.button2);
         y_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Intent myIntent = new Intent(ClassHub.this, CourseGallery.class);
+                myIntent.putExtra("key", theclass.courseName); //Optional parameters
+                ClassHub.this.startActivity(myIntent);
 
             }
         });

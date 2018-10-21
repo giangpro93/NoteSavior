@@ -22,6 +22,7 @@
     <string name="teacher">Teacher</string>
     <string name="student">Student</string>
     <string name="welcome">Welcome to NoteSavior</string>>
+    <string name="camera">Camera</string>>
 
 
 </resources>
