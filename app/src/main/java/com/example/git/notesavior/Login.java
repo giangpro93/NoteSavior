@@ -61,6 +61,7 @@ public class Login extends AppCompatActivity {
                     //put this stuff in database
                     if (firebaseHandler.addTeacher(username.getText().toString(),password.getText().toString())) {
                         Toast.makeText(getApplicationContext(),"Create new account successfully",Toast.LENGTH_SHORT).show();
+                        firebaseHandler.getTeachers();
                     }
                     else {
                         Toast.makeText(getApplicationContext(),"Username is already exist",Toast.LENGTH_SHORT).show();

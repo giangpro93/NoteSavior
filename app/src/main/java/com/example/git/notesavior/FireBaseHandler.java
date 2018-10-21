@@ -80,7 +80,11 @@ public class FireBaseHandler {
         DatabaseReference newTeacher = teachers.push();
         newTeacher.child("username").setValue(username);
         newTeacher.child("password").setValue(password);
-        newTeacher.child("numberOfClasses").setValue("0");
+        newTeacher.child("numberOfClasses").setValue(0);
+
+        user.username = username;
+        user.password = password;
+        user.isTeacher = true;
 
         return true;
     }
@@ -118,7 +122,7 @@ public class FireBaseHandler {
                     teacherLogins.put((String) d.child("username").getValue(), (String) d.child("password").getValue());
                     teacherUsernames.add((String) d.child("username").getValue());
                     if (d.child("numberOfClasses").getValue()!=null)
-                    numberOfClasses.add(Integer.parseInt(d.child("numberOfClasses").getValue().toString()));
+                        numberOfClasses.add(Integer.parseInt(d.child("numberOfClasses").getValue().toString()));
                     else numberOfClasses.add(0);
 
                     DatabaseReference data = teachers.child(d.getKey()).child("classes");
@@ -190,10 +194,12 @@ public class FireBaseHandler {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    final String id = d.child("username").getValue().toString();
-                    if (id.equals(user.username)) {
-                        int a=Integer.parseInt(d.child("numberOfClasses").getValue().toString());
-                        teachers.child(d.getKey()).child("numberOfClasses").setValue(a+1);
+                    //String id = d.child("username").getValue().toString();
+                    if (d.child("username").getValue()!=null)
+                    if (d.child("username").getValue().toString().equals(user.username)) {
+                        if (d.child("numberOfClasses").getValue()!=null)
+                        teachers.child(d.getKey()).child("numberOfClasses").setValue(Integer.parseInt(d.child("numberOfClasses").getValue().toString())+1);
+
                         DatabaseReference temp1 = teachers.child(d.getKey()).child("classes").push();
                         temp1.child("courseName").setValue(courseName);
                         temp1.child("code").setValue(code);
@@ -219,9 +225,11 @@ public class FireBaseHandler {
         for (int i=0; i<numberOfTeachers; i++){
             if (teacherUsernames.get(i).equals(user.username))
             {
-                for (int j=count; j<count+numberOfClasses.get(i); j++) {
-                    if (ArrayOfClasses.get(j).startTime <= hour && hour <= ArrayOfClasses.get(j).endTime)
+                for (int j=count; j<(count+numberOfClasses.get(i)); j++)
+                if (j<ArrayOfClasses.size()){
+                    if (ArrayOfClasses.get(j).startTime <= hour && hour <= ArrayOfClasses.get(j).endTime) {
                         return ArrayOfClasses.get(j);
+                    }
                 }
             }
             count=count+numberOfClasses.get(i);
