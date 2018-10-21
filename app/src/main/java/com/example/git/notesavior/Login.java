@@ -30,7 +30,7 @@ public class Login extends AppCompatActivity {
         final Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (firebaseHandler.checkTeacherLogin(username.getText().toString(),password.getText().toString())) {
+                if (FireBaseHandler.getInstance().checkTeacherLogin(username.getText().toString(),password.getText().toString())) {
                     Toast.makeText(getApplicationContext(),"Login successful",Toast.LENGTH_SHORT).show();
 
                     Calendar rightNow = Calendar.getInstance();
