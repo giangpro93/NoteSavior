@@ -8,4 +8,5 @@ public class User {
     public String password;
     public boolean isTeacher;
     public String CODE;
+    public String courseName;
 }

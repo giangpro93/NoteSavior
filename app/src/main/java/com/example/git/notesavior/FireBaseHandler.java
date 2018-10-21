@@ -1,5 +1,6 @@
 package com.example.git.notesavior;
 
+import android.icu.text.SymbolTable;
 import android.net.sip.SipSession;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -84,16 +85,24 @@ public class FireBaseHandler {
         return true;
     }
 
-    public boolean addStudent(String username, String password) {
-        if (studentLogins.containsKey(username)) {
-            return false;
+    public boolean addStudent(String username, String code) {
+
+        count = 0;
+        DatabaseReference newStudent = null;
+        for (int i=0; i<numberOfTeachers; i++){
+            for (int j=count; j<count+numberOfClasses.get(i); j++) {
+                if (ArrayOfClasses.get(j).code.equals(code)) {
+                    newStudent = students.push();
+                    if (newStudent!=null) {
+                        newStudent.child("username").setValue(username);
+                        newStudent.child("code").setValue(code);
+                    }
+                    return true;
+                }
+            }
+            count=count+numberOfClasses.get(i);
         }
-
-        DatabaseReference newStudent = students.push();
-        newStudent.child("username").setValue(username);
-        newStudent.child("password").setValue(password);
-
-        return true;
+        return false;
     }
 
     public void getTeachers() {
@@ -156,7 +165,6 @@ public class FireBaseHandler {
 
     public boolean checkTeacherLogin(String username, String password) {
         if (teacherLogins.containsKey(username) && teacherLogins.get(username).equals(password)) {
-            //user = new User();
             user.username = username;
             user.password = password;
             user.isTeacher = true;
@@ -168,7 +176,6 @@ public class FireBaseHandler {
 
     public boolean checkStudentLogin(String username, String password) {
         if (studentLogins.containsKey(username) && studentLogins.get(username).equals(password)) {
-            //user = new User();
             user.username = username;
             user.password = password;
             user.isTeacher = false;
@@ -210,25 +217,14 @@ public class FireBaseHandler {
         nullclass.code = "";
         count = 0;
         for (int i=0; i<numberOfTeachers; i++){
-            System.out.println(i);
-            System.out.println("----------------------");
-            System.out.println(count);
-            System.out.println(count+numberOfClasses.get(i)-1);
-            System.out.println("----------------------");
             if (teacherUsernames.get(i).equals(user.username))
             {
-
                 for (int j=count; j<count+numberOfClasses.get(i); j++) {
-                    System.out.println(j);
-                    System.out.println("----------------------");
-                    System.out.println(ArrayOfClasses.get(j).courseName);
-                    System.out.println("----------------------");
                     if (ArrayOfClasses.get(j).startTime <= hour && hour <= ArrayOfClasses.get(j).endTime)
                         return ArrayOfClasses.get(j);
                 }
             }
             count=count+numberOfClasses.get(i);
-
         }
         return nullclass;
     }

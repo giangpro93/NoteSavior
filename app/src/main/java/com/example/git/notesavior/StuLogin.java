@@ -28,13 +28,14 @@ public class StuLogin extends AppCompatActivity {
         final Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (FireBaseHandler.getInstance().addStudent(username.getText().toString(),code.getText().toString())) {
+                if (firebaseHandler.addStudent(username.getText().toString(), code.getText().toString())) {
                     Intent myIntent = new Intent(StuLogin.this, tempClass.class);
                     myIntent.putExtra("key", code.getText().toString()); //Optional parameter
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_SHORT).show();
+                    startActivity(myIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
 }
