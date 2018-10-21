@@ -23,6 +23,8 @@
     <string name="student">Student</string>
     <string name="welcome">Welcome to NoteSavior</string>>
     <string name="camera">Camera</string>>
+    <string name="code">Course Code</string>>
+    <string name="stuTitle">Student Login</string>>
 
 
 </resources>

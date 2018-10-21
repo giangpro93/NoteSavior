@@ -24,45 +24,18 @@ public class StuLogin extends AppCompatActivity {
         firebaseHandler.getTeachers();
 
         final EditText username = (EditText) findViewById(R.id.editText);
-        final EditText password = (EditText) findViewById(R.id.editText4);
-        /*final Button button = findViewById(R.id.button);
+        final EditText code = (EditText) findViewById(R.id.editText4);
+        final Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (firebaseHandler.checkTeacherLogin(username.getText().toString(),password.getText().toString())) {
-                    Toast.makeText(getApplicationContext(),"Login successful",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(StuLogin.this, Schedule.class);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
-        final Button button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if ((username.getText().toString().length()>0) && (password.getText().toString().length()>0)) {
-                    //put this stuff in database
-                    if (firebaseHandler.addTeacher(username.getText().toString(),password.getText().toString())) {
-                        Toast.makeText(getApplicationContext(),"Create new account successfully",Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Username is already exist",Toast.LENGTH_SHORT).show();
-                    }
+                if (FireBaseHandler.getInstance().addStudent(username.getText().toString(),code.getText().toString())) {
+                    Intent myIntent = new Intent(StuLogin.this, Course.class);
+                    myIntent.putExtra("key", code.getText().toString()); //Optional parameters
+                    StuLogin.this.startActivity(myIntent);
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-    }
-
-    // Example of a call to a native method
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    //public native String stringFromJNI();
 }

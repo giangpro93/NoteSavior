@@ -10,12 +10,14 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="136dp"
         android:text="@string/user"
+        android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="32sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,10 +25,10 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="@string/pass"
+        android:layout_marginTop="70dp"
+        android:text="@string/code"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="32sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,40 +50,44 @@
 
     <EditText
         android:id="@+id/editText4"
-        android:layout_width="wrap_content"
+        android:layout_width="287dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:autofillHints="@color/colorPrimaryDark"
         android:ems="10"
         android:inputType="textPassword"
-        android:textAlignment="center"
-        android:autofillHints="@color/colorPrimaryDark"
         android:labelFor="@+id/editText4"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="222dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="39dp"
+        android:layout_width="307dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/button"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText4" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="219dp"
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="@string/create"
+        android:layout_marginTop="40dp"
+        android:text="@string/stuTitle"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
+        android:textSize="35sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
