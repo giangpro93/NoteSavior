@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "594243838227",
-    "firebase_url": "https://notesaviorapp.firebaseio.com",
+    "project_number": "",
+    "firebase_url": "",
     "project_id": "notesaviorapp",
     "storage_bucket": "notesaviorapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:594243838227:android:be4e3cdc52b017c6",
+        "mobilesdk_app_id": "",
         "android_client_info": {
           "package_name": "com.example.git.notesavior"
         }
       },
       "oauth_client": [
         {
-          "client_id": "594243838227-v6ls6qkn0ekod7jjbulabpv02qtskb4k.apps.googleusercontent.com",
+          "client_id": "",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDQy0H2-L2bwzNaNBb0HyvXw2HWw2NLV6A"
+          "current_key": ""
         }
       ],
       "services": {
